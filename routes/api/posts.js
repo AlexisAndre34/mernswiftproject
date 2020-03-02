@@ -242,6 +242,30 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res)=> {
     }
 });
 
+// @route   PUT api/posts/like/:id/:comment_id
+// @desc    Like a post
+// @access  Private
+router.put('/like/:id/:comment_id', auth, async (req, res)=>{
+    try {
+        const post = await Post.findById(req.params.id);
+        const comment = await post.comments.findById(req.params.comment_id);
+
+        //check if user already like post
+        if(comment.likes.filter(like => like.user.toString() === req.user.id).length > 0) {
+            return res.status(400).json({ msg: 'Comment already liked'});
+        }
+
+        comment.likes.unshift({ user: req.user.id });
+
+        await post.save();
+
+        res.json(comment.likes);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
 //TODO like unlike comment
 //update functionnality
 //signal comment and post
