@@ -1,0 +1,4 @@
+{
+    "mongoURI": "mongodb+srv://bduser:password07@mernswiftproject-1jeom.mongodb.net/test?retryWrites=true&w=majority",
+    "jwtSecret": "mysecretToken"
+}
