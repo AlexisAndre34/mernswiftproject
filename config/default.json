@@ -1,7 +1,0 @@
-{
-    "mongoURI": "mongodb+srv://bduser:bduser07@mernswiftproject-1jeom.mongodb.net/test?retryWrites=true&w=majority",
-    "S3_BUCKET":"bucket-mernswift-files",
-    "AWS_ACCESS_KEY_ID":"AKIAJKPLK2GA5RCNWLPA",
-    "AWS_SECRET_ACCESS_KEY":"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",
-    "jwtSecret": "mysecrettoken"
-}
