@@ -21,8 +21,19 @@ const PostSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    tags: {
+        type: [String]
+    },
     //later add pic
     likes: [
+        {
+            user: {
+                type: Schema.Types.ObjectId,
+                ref: 'user'
+            }
+        }
+    ],
+    reports: [
         {
             user: {
                 type: Schema.Types.ObjectId,
@@ -54,10 +65,16 @@ const PostSchema = new Schema({
                         ref: 'user'
                     }
                 }
+            ],
+            reports: [
+                {
+                    user: {
+                        type: Schema.Types.ObjectId,
+                        ref: 'user'
+                    }
+                }
             ]
-            
         }
-        
     ]
 });
 

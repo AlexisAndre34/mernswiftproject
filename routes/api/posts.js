@@ -21,12 +21,20 @@ async(req, res) => {
     if(!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
+
+    const { tags } = req.body;
+    const tagsparse = {};
+    if (tags) {
+        tagsparse.tags = tags.split(',').map(tag => tag.trim());
+    }
+
     try {
         const user = await User.findById(req.user.id).select('-password');
 
         const newPost = new Post({
                 title: req.body.title,
                 text: req.body.text,
+                tags: tagsparse.tags,
                 pseudo: user.pseudo,
                 user: req.user.id
             });
@@ -72,24 +80,6 @@ router.get('/:id', auth, async (req, res) => {
         res.status(500).send('Server Error');
     }
     
-});
-
-// @route   GET api/posts
-// @desc    Get all posts
-// @access  Public
-router.delete('/', auth,  async (req, res) => {
-    try {
-        //Remove post
-        await Post.findOneAndRemove({ user: req.user.id });
-        //Remove user
-        await User.findOneAndRemove({ _id: req.user.id });
-        
-        res.json({ msg: 'user deleted sucessfuly'});
-
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
-    }
 });
 
 // @route   DELETE api/posts/:id
@@ -145,7 +135,7 @@ router.put('/like/:id', auth, async (req, res)=>{
 });
 
 // @route   PUT api/posts/unlike/:id
-// @desc    Like a post
+// @desc    Unlike a post
 // @access  Private
 router.put('/unlike/:id', auth, async (req, res)=>{
     try {
@@ -153,7 +143,7 @@ router.put('/unlike/:id', auth, async (req, res)=>{
 
         //check if user already like post
         if(post.likes.filter(like => like.user.toString() === req.user.id).length === 0) {
-            return res.status(400).json({ msg: 'Post has not yet been liked'});
+            return res.status(400).json({ msg: 'Post has not yet been liked yet'});
         }
 
         //Get remove index
@@ -166,6 +156,57 @@ router.put('/unlike/:id', auth, async (req, res)=>{
         await post.save();
 
         res.json(post.likes);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   PUT api/posts/report/:id
+// @desc    Report a post
+// @access  Private
+router.put('/report/:id', auth, async (req, res)=>{
+    try {
+        const post = await Post.findById(req.params.id);
+
+        //check if user already like post
+        if(post.reports.filter(report => report.user.toString() === req.user.id).length > 0) {
+            return res.status(400).json({ msg: 'Post already reported'});
+        }
+
+        post.reports.unshift({ user: req.user.id });
+
+        await post.save();
+
+        res.json(post.reports);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   PUT api/posts/unreport/:id
+// @desc    Unreport a post
+// @access  Private
+router.put('/unreport/:id', auth, async (req, res)=>{
+    try {
+        const post = await Post.findById(req.params.id);
+
+        //check if user already like post
+        if(post.reports.filter(report => report.user.toString() === req.user.id).length === 0) {
+            return res.status(400).json({ msg: 'Post has not yet been reported yet'});
+        }
+
+        //Get remove index
+        const removeIndex = post.reports
+            .map(report => report.user.toString())
+            .indexOf(req.user.id);
+
+        post.reports.splice(removeIndex, 1);
+
+        await post.save();
+
+        res.json(post.reports);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
@@ -242,13 +283,13 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res)=> {
     }
 });
 
-// @route   PUT api/posts/like/:id/:comment_id
-// @desc    Like a post
+// @route   PUT api/posts/comment/like/:id/:comment_id
+// @desc    Like a comment
 // @access  Private
-router.put('/like/:id/:comment_id', auth, async (req, res)=>{
+router.put('/comment/like/:id/:comment_id', auth, async (req, res)=>{
     try {
         const post = await Post.findById(req.params.id);
-        const comment = await post.comments.findById(req.params.comment_id);
+        const comment = await post.comments.find(comment => comment.id === req.params.comment_id);
 
         //check if user already like post
         if(comment.likes.filter(like => like.user.toString() === req.user.id).length > 0) {
@@ -266,10 +307,89 @@ router.put('/like/:id/:comment_id', auth, async (req, res)=>{
     }
 });
 
-//TODO like unlike comment
+// @route   PUT api/posts/comment/unlike/:id/:comment_id
+// @desc    Unlike a comment
+// @access  Private
+router.put('/comment/unlike/:id/:comment_id', auth, async (req, res)=>{
+    try {
+        const post = await Post.findById(req.params.id);
+        const comment = await post.comments.find(comment => comment.id === req.params.comment_id);
+
+        //check if user already like post
+        if(comment.likes.filter(like => like.user.toString() === req.user.id).length === 0) {
+            return res.status(400).json({ msg: 'Comment has not been liked yet'});
+        }
+
+        //Get remove index
+        const removeIndex = comment.likes
+            .map(like => like.user.toString())
+            .indexOf(req.user.id);
+
+        comment.likes.splice(removeIndex, 1);
+
+        await post.save();
+
+        res.json(comment.likes);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   PUT api/posts/comment/report/:id/:comment_id
+// @desc    Report a comment
+// @access  Private
+router.put('/comment/report/:id/:comment_id', auth, async (req, res)=>{
+    try {
+        const post = await Post.findById(req.params.id);
+        const comment = await post.comments.find(comment => comment.id === req.params.comment_id);
+
+        //check if user already like post
+        if(comment.reports.filter(report => report.user.toString() === req.user.id).length > 0) {
+            return res.status(400).json({ msg: 'Comment already reported'});
+        }
+
+        comment.reports.unshift({ user: req.user.id });
+
+        await post.save();
+
+        res.json(comment.reports);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   PUT api/posts/comment/unreport/:id/:comment_id
+// @desc    Unreport a comment
+// @access  Private
+router.put('/comment/unreport/:id/:comment_id', auth, async (req, res)=>{
+    try {
+        const post = await Post.findById(req.params.id);
+        const comment = await post.comments.find(comment => comment.id === req.params.comment_id);
+
+        //check if user already like post
+        if(comment.reports.filter(report => report.user.toString() === req.user.id).length === 0) {
+            return res.status(400).json({ msg: 'Comment has not been reported yet'});
+        }
+
+        //Get remove index
+        const removeIndex = comment.reports
+            .map(report => report.user.toString())
+            .indexOf(req.user.id);
+
+        comment.reports.splice(removeIndex, 1);
+
+        await post.save();
+
+        res.json(comment.reports);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
 //update functionnality
-//signal comment and post
 //admin user
-//tag
 
 module.exports = router;
