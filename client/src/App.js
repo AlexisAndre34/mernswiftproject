@@ -14,13 +14,14 @@ import setAuthToken from './utils/setAuthToken';
 
 
 
-const App = () => { 
+const App = () => {
   useEffect(() => {
-    if(localStorage.token){
+    if (localStorage.token) {
       setAuthToken(localStorage.token);
       store.dispatch(loadUser());
     }
   }, []);
+  
   return (
   <Provider store={ store }>
     <Router>
@@ -37,7 +38,8 @@ const App = () => {
       </Fragment>
     </Router>
   </Provider>
-)};
+  );
+};
 
     
 
