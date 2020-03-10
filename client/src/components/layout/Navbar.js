@@ -35,7 +35,7 @@ export const Navbar = ({ auth: { isAuthenticated, loading}, logout }) => {
           <Link to='/'><i className=""></i> Would You React</Link>
         </h1>
         {/*   */}
-        { !loading && (<Fragment>{ isAuthenticated ? authLinks : guestLinks }</Fragment>) }
+        { (<Fragment>{ isAuthenticated ? authLinks : guestLinks }</Fragment>) }
       </nav>
     );
 };

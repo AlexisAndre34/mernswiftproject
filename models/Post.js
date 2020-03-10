@@ -24,6 +24,9 @@ const PostSchema = new Schema({
     tags: {
         type: [String]
     },
+    location: {
+        type: String
+    },
     //later add pic
     likes: [
         {

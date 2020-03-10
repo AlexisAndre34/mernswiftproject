@@ -7,7 +7,9 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Dashboard from './components/dashboard/Dashboard'
 import Posts from './components/posts/Posts';
+import PostForm from './components/posts/PostForm';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import PrivateRoute from './components/routing/PrivateRoute';
 //Redux
 import { Provider } from 'react-redux';
 import store from './store';
@@ -37,6 +39,7 @@ const App = () => {
             <Route exact path="/login" component={ Login } />
             <Route exact path="/dashboard" component={ Dashboard } />
             <Route exact path="/posts" component={ Posts } />
+            <PrivateRoute exact path="/post/create" component={ PostForm } />
           </Switch>
         </section>
       </Fragment>
