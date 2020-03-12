@@ -4,6 +4,7 @@ import {
     GET_POSTS,
     POST_ERROR,
     UPDATE_LIKES,
+    UPDATE_REPORTS,
     DELETE_POST,
     ADD_POST,
     GET_POST,
@@ -39,7 +40,7 @@ export const getPost = postId => async dispatch => {
     } catch (err) {
         dispatch({
             type: POST_ERROR,
-            payload: { msg: err.response.statusText, status: err.response.status }
+            payload: { msg: 'error get post', status: '404' }
         });
     }
 };
@@ -71,7 +72,39 @@ export const removeLike = postId => async dispatch => {
     } catch (err) {
         dispatch({
             type: POST_ERROR,
-            payload: { msg: err.response.statusText, status: err.response.status }
+            payload: { msg: 'error removeLike', status: '404' }
+        });
+    }
+};
+
+//ADD Report
+export const addReport = postId => async dispatch => {
+    try {
+        const res = await axios.put(`/api/posts/report/${postId}`);
+        dispatch({
+            type: UPDATE_REPORTS,
+            payload: { postId, reports: res.data }
+        });
+    } catch (err) {
+        dispatch({
+            type: POST_ERROR,
+            payload: { msg: 'error report', status: '404' }
+        });
+    }
+};
+
+//REMOVE Report
+export const removeReport = postId => async dispatch => {
+    try {
+        const res = await axios.put(`/api/posts/unreport/${postId}`);
+        dispatch({
+            type: UPDATE_REPORTS,
+            payload: { postId, reports: res.data }
+        });
+    } catch (err) {
+        dispatch({
+            type: POST_ERROR,
+            payload: { msg: 'error removeReport', status: '404' }
         });
     }
 };

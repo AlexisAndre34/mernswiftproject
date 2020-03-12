@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
-import { addLikeComment, removeLikeComment } from '../../actions/post';
+import { addLikeComment, removeLikeComment, deleteComment } from '../../actions/post';
 
 
 const CommentItem = ({
@@ -11,7 +11,8 @@ const CommentItem = ({
     comment: {_id, text, pseudo, user, date, likes, reports},
     auth,
     addLikeComment,
-    removeLikeComment
+    removeLikeComment,
+    deleteComment
 }) => (
         <div className="post bg-white p-1 my-1">
          
@@ -36,7 +37,7 @@ const CommentItem = ({
                 Publié le <Moment format='DD/MM/YYYY'>{date}</Moment>
             </p>
           </div>
-          {/* ecrire les fonctions addlikecomment and removelikecomment */}
+          
           {auth.isAuthenticated && likes.filter(like  => like.user === auth.user._id).length > 0 ? (
             <button onClick={e => removeLikeComment(postId, _id)} type="button" className="btn btn-light">
                 <i className="fas fa-thumbs-up"></i>{' '}
@@ -47,20 +48,32 @@ const CommentItem = ({
                 <span>{likes.length}</span>
             </button>
             )}
+          
+          {auth.isAuthenticated && !auth.loading && user === auth.user._id && (
+          <button
+          onClick={() => deleteComment(postId, _id)}
+          type='button'
+          className='btn btn-danger'
+          >
+          <i className='fas fa-times' />
+          </button>
+          )}
             
         </div>
         
     );
 
+
 CommentItem.propTypes = {
-    postId: PropTypes.node.isRequired,
+    postId: PropTypes.string.isRequired,
     comment: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
     addLikeComment: PropTypes.func.isRequired,
-    removeLikeComment: PropTypes.func.isRequired
+    removeLikeComment: PropTypes.func.isRequired,
+    deleteComment: PropTypes.func.isRequired
 }
 const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, { addLikeComment, removeLikeComment })(CommentItem);
+export default connect(mapStateToProps, { addLikeComment, removeLikeComment, deleteComment })(CommentItem);

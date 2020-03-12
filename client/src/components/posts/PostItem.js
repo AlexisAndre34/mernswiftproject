@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
-import { addLike, removeLike, deletePost } from '../../actions/post';
+import { addLike, removeLike, deletePost, addReport, removeReport } from '../../actions/post';
 
 const PostItem = ({
     auth,
     addLike,
     removeLike,
     deletePost,
+    addReport,
+    removeReport,
     post: {_id, user, title, text, pseudo, date, tags, location, likes, comments, reports},
     showActions
 }) => (
@@ -37,7 +39,7 @@ const PostItem = ({
             {location}
         </p>
         <ul className="tags">
-            {tags.map(tag =>
+            {tags && tags.length>0 && tags.map(tag =>
             <li key={tag}>{tag}</li>
                 )}
         </ul>
@@ -46,14 +48,24 @@ const PostItem = ({
         </p>
         {/* auth.isAuthenticatd may be speareted */}
         {showActions && <Fragment>
-            {auth.isAuthenticated && likes.filter(like  => like.user === auth.user._id).length > 0 ? (
-            <button onClick={e => removeLike(_id)} type="button" className="btn btn-light">
-            <i className="fas fa-thumbs-up"></i>{' '}
-            <span>{likes.length}</span>
+        {auth.isAuthenticated && likes.filter(like  => like.user === auth.user._id).length > 0 ? (
+        <button onClick={e => removeLike(_id)} type="button" className="btn btn-light">
+        <i className="fas fa-thumbs-up"></i>{' '}
+        <span>{likes.length}</span>
         </button> ) : (
-            <button onClick={e => addLike(_id)} type="button" className="btn btn-light">
-            <i className="fas fa-thumbs-up"></i>{' '}
-            <span>{likes.length}</span>
+        <button onClick={e => addLike(_id)} type="button" className="btn btn-light">
+        <i className="fas fa-thumbs-up"></i>{' '}
+        <span>{likes.length}</span>
+        </button>
+        )}
+        {auth.isAuthenticated && reports.filter(report  => report.user === auth.user._id).length > 0 ? (
+        <button onClick={e => removeReport(_id)} type="button" className="btn btn-light">
+        <i className="fas fa-exclamation"></i>{' '}
+        <span>{reports.length}</span>
+        </button> ) : (
+        <button onClick={e => addReport(_id)} type="button" className="btn btn-light">
+        <i className="fas fa-exclamation"></i>{' '}
+        <span>{reports.length}</span>
         </button>
         )}
         <Link to={`/posts/${_id}`} className="btn btn-primary">
@@ -82,11 +94,13 @@ PostItem.propTypes = {
     post: PropTypes.object.isRequired,
     addLike: PropTypes.func.isRequired,
     removeLike: PropTypes.func.isRequired,
-    deletePost: PropTypes.func.isRequired
+    deletePost: PropTypes.func.isRequired,
+    addReport: PropTypes.func.isRequired,
+    removeReport: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, { addLike, removeLike, deletePost })(PostItem);
+export default connect(mapStateToProps, { addLike, removeLike, deletePost, addReport, removeReport })(PostItem);

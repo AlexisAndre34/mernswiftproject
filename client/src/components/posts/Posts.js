@@ -6,10 +6,11 @@ import { getPosts } from '../../actions/post';
 import Spinner from '../layout/Spinner';
 import PostItem from './PostItem';
 
-const Posts = ({ getPosts, post: { posts, loading } }) => {
+const Posts = ({ getPosts, post: { posts, loading }, check }) => {
     useEffect(() => {
         getPosts();
     }, [getPosts]);
+
     
     return loading ? <Spinner /> : <Fragment>
         <h1 className="large text-primary">Posts</h1>
@@ -19,12 +20,33 @@ const Posts = ({ getPosts, post: { posts, loading } }) => {
         <Link to={'/post/create'} className="btn btn-primary">
             Nouveau poste
         </Link>
+        <button onClick={() => this.setState({check: false})}>
+            Post les plus récents
+        </button>
+        <button onClick={() => this.setState({check: true})}>
+            Post les plus aimés
+        </button>
+
+        
         <div className="posts">
-            {posts.map(post => (
+            {check ? ( <Fragment>
+                {posts.sort((a,b) => (a.likes < b.likes) ? 1 : -1).map(post => (
                 <PostItem key={post._id} post={post} />
             ))}
+            </Fragment>
+            ) : ( <Fragment>
+                {posts.map(post => (
+                <PostItem key={post._id} post={post} />
+            ))} </Fragment>
+            )
+            }
         </div>
     </Fragment>
+}
+
+
+Posts.defaultProps = {
+    check: false
 }
 
 Posts.propTypes = {
