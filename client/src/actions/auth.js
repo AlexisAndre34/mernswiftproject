@@ -55,7 +55,6 @@ export const register = ({ pseudo, email, password }) => async dispatch => {
 
         if(errors) {
             errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
-            console.log('ok pblm');
         }
         dispatch({
             type: REGISTER_FAIL

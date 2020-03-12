@@ -1,0 +1,66 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import Moment from 'react-moment';
+import { addLikeComment, removeLikeComment } from '../../actions/post';
+
+
+const CommentItem = ({
+    postId,
+    comment: {_id, text, pseudo, user, date, likes, reports},
+    auth,
+    addLikeComment,
+    removeLikeComment
+}) => (
+        <div className="post bg-white p-1 my-1">
+         
+          <div>
+            {/* gerer l'acces au profil et remettre le pseudo dans balise link plus tard
+            <a href="profile.html">
+              <img
+                className="round-img"
+                src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200"
+                alt=""
+              />
+            </a>
+            */}
+            <h4>{pseudo}</h4>
+          </div>
+         
+          <div>
+            <p className="my-1">
+              {text}
+            </p>
+             <p className="post-date">
+                Publié le <Moment format='DD/MM/YYYY'>{date}</Moment>
+            </p>
+          </div>
+          {/* ecrire les fonctions addlikecomment and removelikecomment */}
+          {auth.isAuthenticated && likes.filter(like  => like.user === auth.user._id).length > 0 ? (
+            <button onClick={e => removeLikeComment(postId, _id)} type="button" className="btn btn-light">
+                <i className="fas fa-thumbs-up"></i>{' '}
+                <span>{likes.length}</span>
+            </button> ) : (
+            <button onClick={e => addLikeComment(postId, _id)} type="button" className="btn btn-light">
+                <i className="fas fa-thumbs-up"></i>{' '}
+                <span>{likes.length}</span>
+            </button>
+            )}
+            
+        </div>
+        
+    );
+
+CommentItem.propTypes = {
+    postId: PropTypes.node.isRequired,
+    comment: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired,
+    addLikeComment: PropTypes.func.isRequired,
+    removeLikeComment: PropTypes.func.isRequired
+}
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+
+export default connect(mapStateToProps, { addLikeComment, removeLikeComment })(CommentItem);

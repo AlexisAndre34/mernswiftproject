@@ -35,6 +35,7 @@ async(req, res) => {
                 title: req.body.title,
                 text: req.body.text,
                 tags: tagsparse.tags,
+                location: req.body.location,
                 pseudo: user.pseudo,
                 user: req.user.id
             });
