@@ -10,7 +10,8 @@ import {
     GET_POST,
     ADD_COMMENT,
     DELETE_COMMENT,
-    UPDATE_LIKES_COMMENT
+    UPDATE_LIKES_COMMENT,
+    UPDATE_REPORTS_COMMENT
 } from './types';
 
 //GET posts
@@ -231,6 +232,38 @@ export const removeLikeComment = (postId, commentId) => async dispatch => {
         dispatch({
             type: POST_ERROR,
             payload: { msg: 'removeLikeComment error', status: '404' }
+        });
+    }
+};
+
+//ADD report Comment
+export const addReportComment = (postId, commentId) => async dispatch => {
+    try {
+        const res = await axios.put(`/api/posts/comment/report/${postId}/${commentId}`);
+        dispatch({
+            type: UPDATE_REPORTS_COMMENT,
+            payload: { commentId, reports: res.data }
+        });
+    } catch (err) {
+        dispatch({
+            type: POST_ERROR,
+            payload: { msg: 'addReportComment error', status: '404' }
+        });
+    }
+};
+
+//REMOVE Report Comment
+export const removeReportComment = (postId, commentId) => async dispatch => {
+    try {
+        const res = await axios.put(`/api/posts/comment/unreport/${postId}/${commentId}`);
+        dispatch({
+            type: UPDATE_REPORTS_COMMENT,
+            payload: { commentId, reports: res.data }
+        });
+    } catch (err) {
+        dispatch({
+            type: POST_ERROR,
+            payload: { msg: 'removeReportComment error', status: '404' }
         });
     }
 };

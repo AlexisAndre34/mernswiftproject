@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
-import { addLikeComment, removeLikeComment, deleteComment } from '../../actions/post';
+import { addLikeComment, removeLikeComment, deleteComment, addReportComment, removeReportComment } from '../../actions/post';
 
 
 const CommentItem = ({
@@ -12,7 +12,9 @@ const CommentItem = ({
     auth,
     addLikeComment,
     removeLikeComment,
-    deleteComment
+    deleteComment,
+    addReportComment,
+    removeReportComment
 }) => (
         <div className="post bg-white p-1 my-1">
          
@@ -48,6 +50,16 @@ const CommentItem = ({
                 <span>{likes.length}</span>
             </button>
             )}
+            {auth.isAuthenticated && reports.filter(report  => report.user === auth.user._id).length > 0 ? (
+            <button onClick={e => removeReportComment(postId, _id)} type="button" className="btn btn-light">
+            <i className="fas fa-exclamation"></i>{' '}
+            <span>{reports.length}</span>
+            </button> ) : (
+            <button onClick={e => addReportComment(postId, _id)} type="button" className="btn btn-light">
+            <i className="fas fa-exclamation"></i>{' '}
+            <span>{reports.length}</span>
+            </button>
+            )}
           
           {auth.isAuthenticated && !auth.loading && user === auth.user._id && (
           <button
@@ -70,10 +82,13 @@ CommentItem.propTypes = {
     auth: PropTypes.object.isRequired,
     addLikeComment: PropTypes.func.isRequired,
     removeLikeComment: PropTypes.func.isRequired,
-    deleteComment: PropTypes.func.isRequired
+    deleteComment: PropTypes.func.isRequired,
+    addReportComment: PropTypes.func.isRequired,
+    removeReportComment: PropTypes.func.isRequired
+
 }
 const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, { addLikeComment, removeLikeComment, deleteComment })(CommentItem);
+export default connect(mapStateToProps, { addLikeComment, removeLikeComment, deleteComment, addReportComment, removeReportComment })(CommentItem);

@@ -8,7 +8,8 @@ import {
     GET_POST,
     ADD_COMMENT,
     DELETE_COMMENT,
-    UPDATE_LIKES_COMMENT
+    UPDATE_LIKES_COMMENT,
+    UPDATE_REPORTS_COMMENT
 } from '../actions/types';
 
 const initialState = {
@@ -78,6 +79,19 @@ export default function(state = initialState, action) {
                       ? { ...comment, likes: payload.likes }
                       : comment
                   )
+                },
+                loading: false
+            };
+        case UPDATE_REPORTS_COMMENT:
+            return {
+                ...state,
+                post: {
+                    ...state.post,
+                    comments: state.post.comments.map(comment =>
+                    comment._id === payload.commentId
+                        ? { ...comment, reports: payload.reports }
+                        : comment
+                    )
                 },
                 loading: false
             };
