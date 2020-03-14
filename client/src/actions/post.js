@@ -14,7 +14,7 @@ import {
     UPDATE_REPORTS_COMMENT
 } from './types';
 
-//GET posts
+//GET posts by date 
 export const getPosts = () => async dispatch => {
     try {
         const res = await axios.get('/api/posts');
@@ -29,6 +29,24 @@ export const getPosts = () => async dispatch => {
         });
     }
 };
+/*faire le type GET_POSTS_BY_LIKE, faire dans posts back end
+ ordering by like faire le reducer mettre la function dans le front et voila */
+
+// GET posts by like
+export const getPostsByLikes = () => async dispatch => {
+    try {
+        const res = await axios.get('/api/posts/filteredbylikes');
+        dispatch({
+            type: GET_POSTS,
+            payload: res.data
+        })
+    } catch (err) {
+        dispatch({
+            type: POST_ERROR,
+            payload: { msg: 'error getting posts by like', status: '404'}
+        });
+    }
+} 
 
 //GET post
 export const getPost = postId => async dispatch => {
@@ -267,3 +285,4 @@ export const removeReportComment = (postId, commentId) => async dispatch => {
         });
     }
 };
+
