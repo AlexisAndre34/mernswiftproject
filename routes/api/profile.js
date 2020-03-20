@@ -7,7 +7,7 @@ const { check, validationResult} = require('express-validator');
 
 
 // @route   GET api/profile/me
-// @desc    Get current users profile
+// @desc    Get current user profile
 // @access  Private
 router.get('/me', auth, async (req, res) => {
     

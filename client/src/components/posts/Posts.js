@@ -15,11 +15,6 @@ const Posts = ({ getPosts, post: { posts, loading } }) => {
     }, [getPosts, filter]);
 
     
-
-
-    console.log(filter)
-
-    
     return loading ? <Spinner /> : <Fragment>
         <h1 className="large text-primary">Posts</h1>
         <p className="lead">
@@ -47,22 +42,6 @@ const Posts = ({ getPosts, post: { posts, loading } }) => {
             ))} </Fragment>
         }
         
-
-        {/* 
-        <div className="posts">
-            {check ? ( <Fragment>
-                {posts.sort((a,b) => (a.likes < b.likes) ? 1 : -1).map(post => (
-                <PostItem key={post._id} post={post} />
-            ))}
-            </Fragment>
-            ) : ( <Fragment>
-                {posts.map(post => (
-                <PostItem key={post._id} post={post} />
-            ))} </Fragment>
-            )
-            }
-        </div>
-        */}
     </Fragment>
 }
 

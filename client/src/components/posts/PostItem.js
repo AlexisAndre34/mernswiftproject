@@ -71,7 +71,7 @@ const PostItem = ({
         <Link to={`/posts/${_id}`} className="btn btn-primary">
             Réponses <span className='comment-count'>{comments.length}</span>
         </Link>
-        {!auth.loading && user === auth.user._id && (
+        {auth.user !== null && !auth.loading && user === auth.user._id && (
             <button onClick={e => deletePost(_id)}     
             type="button"
             className="btn btn-danger"
