@@ -7,7 +7,7 @@ var firebaseConfig = {
     databaseURL: process.env.databaseURL,
     projectId: process.env.projectId,
     storageBucket: process.env.storageBucket,
-    messagingSenderId: messagingSenderId,
+    messagingSenderId: process.env.messagingSenderId,
     appId: process.env.appId,
     measurementId: process.env.measurementId
   };
