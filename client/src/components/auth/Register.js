@@ -6,6 +6,9 @@ import { register } from '../../actions/auth';
 import PropTypes from 'prop-types';
 import storage from '../../firebaseConfig';
 import { v4 as uuidv4 } from 'uuid';
+import firebase from 'firebase/app';
+
+
 
 const Register = ({ setAlert, register, isAuthenticated }) => {
     const [formData, setFormData] = useState({
@@ -59,6 +62,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
             const uploadTask = await imageRef.put(image, metadata);
             const urldownload = await imageRef.getDownloadURL().catch((error) => console.log(error));
             setFormData({...formData, avatar: urldownload});
+            setUrl(urldownload);
         } else {
             setAlert('Veuillez choisir une image');
         }
@@ -118,7 +122,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                     <input type="file" onChange={handChange} />{' '}
                     <button type="button" className="btn btn-primary" onClick={handleUpdate} >Button</button>
                     </div>
-                    { url ? <img src={url} /> : <p>choisir une image de profile</p>}
+                    { url ? <img src={avatar} /> : <p>choisir une image de profile</p>}
                 </Fragment>
                 <input type="submit" className="btn btn-primary" value="Register" />
             </form>
