@@ -9,6 +9,7 @@ import Dashboard from './components/dashboard/Dashboard'
 import Posts from './components/posts/Posts';
 import PostForm from './components/posts/PostForm';
 import Post from './components/post/Post';
+import Profile from './components/profile/Profile'
 import CreateProfile from './components/profile-forms/CreateProfile';
 import EditProfile from './components/profile-forms/EditProfile';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -43,6 +44,7 @@ const App = () => {
             <Route exact path="/dashboard" component={ Dashboard } />
             <Route exact path="/posts" component={ Posts } />
             <Route exact path="/posts/:id" component={ Post } />
+            <Route exact path='/profile/:id' component={Profile} />
             <PrivateRoute exact path="/post/create" component={ PostForm } />
             <PrivateRoute exact path="/create-profile" component={ CreateProfile } />
             <PrivateRoute exact path="/edit-profile" component={ EditProfile } />

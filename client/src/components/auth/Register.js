@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
 import PropTypes from 'prop-types';
+import storage from '../../firebaseConfig';
+import { v4 as uuidv4 } from 'uuid';
 
 
 const Register = ({ setAlert, register, isAuthenticated }) => {
@@ -11,11 +13,18 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
         pseudo: '',
         email: '',
         password: '',
-        password2: ''
+        password2: '',
+        avatar: ''
 
     });
 
-    const {pseudo, email, password, password2} = formData;
+    const {pseudo, email, password, password2, avatar} = formData;
+    
+    const [image, setImage] = useState(null);
+    const [url, setUrl] = useState("");
+
+    
+
 
     const onChange = e => setFormData({...formData, [e.target.name]: e.target.value});
 
@@ -25,9 +34,36 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
             setAlert('les mots de passe ne correspondent pas', 'danger');
         }
         else {
-            register({ pseudo, email, password });
+            register({ pseudo, email, password, avatar });
         }
     };
+
+    const handChange = e => {
+        const file = e.target.files[0];
+        if(file) {
+            const fileType = file["type"]
+            const validImageTypes=["image/jpeg","image/png"]
+            if (validImageTypes.includes(fileType)) {
+                setImage(file);
+
+            } else {
+                setAlert('Veuillez choisir une image', 'danger');
+            }
+        }
+    }
+
+    const handleUpdate = async () => {
+        if(image) {
+            const metadata = {contentType: 'image/jpeg'}
+            const imageName = uuidv4() + 'jpeg';
+            const imageRef = storage.ref(`images/${imageName}`);
+            const uploadTask = await imageRef.put(image, metadata);
+            const urldownload = await imageRef.getDownloadURL().catch((error) => console.log(error));
+            setFormData({...formData, avatar: urldownload});
+        } else {
+            setAlert('Veuillez choisir une image');
+        }
+    }
 
     if(isAuthenticated) {
         return <Redirect to='/dashboard' />
@@ -78,6 +114,13 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                     //minLength="6"
                 />
                 </div>
+                <Fragment>
+                    <div>
+                    <input type="file" onChange={handChange} />{' '}
+                    <button type="button" className="btn btn-primary" onClick={handleUpdate} >Button</button>
+                    </div>
+                    { url ? <img src={url} /> : <p>choisir une image de profile</p>}
+                </Fragment>
                 <input type="submit" className="btn btn-primary" value="Register" />
             </form>
             <p className="my-1">

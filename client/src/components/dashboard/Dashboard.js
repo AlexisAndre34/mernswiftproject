@@ -2,13 +2,13 @@ import React, { useEffect, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getCurrentProfile } from '../../actions/profile';
+import { getCurrentProfile, deleteAccount } from '../../actions/profile';
 import Spinner from '../layout/Spinner';
 import DashBoardActions from './DashBoardActions';
 import { getPosts } from '../../actions/post';
 import PostItem from '../posts/PostItem';
 
-const Dashboard = ({ getCurrentProfile, auth: { user }, profile: { profile, loading}, getPosts, post: { posts } }) => {
+const Dashboard = ({ getCurrentProfile, deleteAccount, auth: { user }, profile: { profile, loading}, getPosts, post: { posts } }) => {
     useEffect(() => {
         getCurrentProfile();
         getPosts();
@@ -21,6 +21,11 @@ const Dashboard = ({ getCurrentProfile, auth: { user }, profile: { profile, load
         {profile !== null ? (
         <Fragment>
             <DashBoardActions />
+            <div className="my-2">
+                <button className="btn btn-danger" onClick={() => deleteAccount()}>
+                    <i className="fas fa-user-minus"></i>
+                </button>
+            </div>
             <p className="lead my-2">Description :</p>
             <p className="m-1">{profile.bio}</p>
             <p className="lead my-2">Mes posts :</p>
@@ -45,6 +50,7 @@ const Dashboard = ({ getCurrentProfile, auth: { user }, profile: { profile, load
 
 Dashboard.propTypes = {
     getCurrentProfile: PropTypes.func.isRequired,
+    deleteAccount: PropTypes.func.isRequired,
     getPosts: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
     profile: PropTypes.object.isRequired,
@@ -57,4 +63,4 @@ const mapStateToProps = state => ({
     post: state.post
 })
 
-export default connect(mapStateToProps, { getCurrentProfile, getPosts })(Dashboard);
+export default connect(mapStateToProps, { getCurrentProfile, deleteAccount, getPosts })(Dashboard);

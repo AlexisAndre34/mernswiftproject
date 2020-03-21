@@ -6,7 +6,7 @@ import { getPosts } from '../../actions/post';
 import Spinner from '../layout/Spinner';
 import PostItem from './PostItem';
 
-const Posts = ({ getPosts, post: { posts, loading } }) => {
+const Posts = ({ getPosts, post: { posts, loading }, auth: {auth, user} }) => {
 
     const [filter, toggleFilter] = useState('0');
 
@@ -14,22 +14,41 @@ const Posts = ({ getPosts, post: { posts, loading } }) => {
         getPosts();
     }, [getPosts, filter]);
 
+    const normalFilter = (
+        <div>
+            <button value={0} onClick={e => toggleFilter(e.target.value)} className="btn btn-dark">
+                Post les plus récents
+            </button>
+            <button value={1} onClick={e => toggleFilter(e.target.value)} className="btn btn-dark">
+                Post les plus aimés
+            </button>
+        </div>
+    )
+
+    const adminFilter = (
+        <div>
+            <button value={2} onClick={e => toggleFilter(e.target.value)} className="btn btn-danger">
+                Post reportés
+            </button>
+        </div>
+    )
+
     
     return loading ? <Spinner /> : <Fragment>
         <h1 className="large text-primary">Posts</h1>
         <p className="lead">
             <i className="fas fa-user"></i>Bienvenue sur NOTRESITE
         </p>
-        <Link to={'/post/create'} className="btn btn-primary">
+        <Link to={'/post/create'} className="btn btn-primary my-2">
             Nouveau poste
         </Link>
-        <button value={0} onClick={e => toggleFilter(e.target.value)} className="btn btn-dark">
-            Post les plus récents
-        </button>
-        <button value={1} onClick={e => toggleFilter(e.target.value)} className="btn btn-dark">
-            Post les plus aimés
-        </button>
-
+        { (<Fragment>{ user !== null && user.isAdmin ? adminFilter : normalFilter }</Fragment>) }
+        { filter === '2' && <Fragment >
+                {posts.sort((a,b) => (a.reports < b.reports) ? 1 : -1).map(post => (
+                <PostItem key={post._id} post={post} />
+            ))}
+            </Fragment> 
+        }
         { filter === '1' && <Fragment >
                 {posts.sort((a,b) => (a.likes < b.likes) ? 1 : -1).map(post => (
                 <PostItem key={post._id} post={post} />
@@ -50,11 +69,13 @@ const Posts = ({ getPosts, post: { posts, loading } }) => {
 
 Posts.propTypes = {
     getPosts: PropTypes.func.isRequired,
-    post: PropTypes.object.isRequired
+    post: PropTypes.object.isRequired,
+    auth: PropTypes.object
 }
 
 const mapStateToProps = state => ({
-    post: state.post
+    post: state.post,
+    auth: state.auth
 })
 
 export default connect(mapStateToProps, { getPosts })(Posts);

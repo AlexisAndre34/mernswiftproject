@@ -34,14 +34,18 @@ export const loadUser = () => async dispatch => {
 }
 
 //Register User
-export const register = ({ pseudo, email, password }) => async dispatch => {
+export const register = ({ pseudo, email, password, avatar }) => async dispatch => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
         }
     };
 
-    const body = JSON.stringify({ pseudo, email, password });
+    if(avatar === ""){
+        avatar = "https://firebasestorage.googleapis.com/v0/b/projectmernswift.appspot.com/o/images%2Fdefaultuser.png?alt=media&token=e54c67e6-8dc0-477c-b8a3-e288033c5849"
+    }
+
+    const body = JSON.stringify({ pseudo, email, password, avatar });
 
     try {
         const res = await axios.post('/api/users', body, config);

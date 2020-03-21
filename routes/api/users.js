@@ -25,7 +25,7 @@ router.post('/', [
             return res.status(400).json({ errors: errors.array() });
         }
         
-        const  {pseudo, email, password} = req.body;
+        const  {pseudo, email, password, avatar} = req.body;
 
         try {
             let user = await User.findOne({ email });
@@ -34,44 +34,14 @@ router.post('/', [
                 return res.status(400).json({ errors: [ { msg: 'L\'utilisateur existe déjà'}] });
 
             }
-            /*
-            //need to add image for profil pictures later
-            const file = req.files.file;
-
-            if(!req.file.mimetype.startsWith('image')) {
-                res.status(400).json({ errors: [ { msg: 'images seulement'}] });
-            }
-
-            file.name = `photo_${user.pseudo}${path.parse(file.name).ext}`;
-
-            var Blob = req.files.file.data;
-
-            const S3_BUCKET = config.get('S3_BUCKET');
-            const AWS_ACCESS_KEY_ID = config.get('AWS_ACCESS_KEY_ID');
-            const AWS_SECRET_ACCESS_KEY = config.get('AWS_SECRET_ACCESS_KEY');
-
-            AWS.config.update({
-                accessKeyId: AWS_ACCESS_KEY_ID,
-                secretAccessKey: AWS_SECRET_ACCESS_KEY
-            })
-
-            const s3 = new AWS.S3();
-
-            const params= {
-                Bucket: S3_BUCKET,
-                Key: file.name,
-                Body: Blob
-            };
-
-            s3.upload(params, (err, data)=> {
-                console.log(err, data);
-            })
-            */
+            const isAdmin = false;
             
             user = new User({
                 pseudo,
                 email,
-                password
+                password,
+                avatar,
+                isAdmin
             });
 
             const salt = await bcrypt.genSalt(10);

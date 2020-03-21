@@ -8,7 +8,7 @@ import { addLikeComment, removeLikeComment, deleteComment, addReportComment, rem
 
 const CommentItem = ({
     postId,
-    comment: {_id, text, pseudo, user, date, likes, reports},
+    comment: {_id, text, pseudo, user, avatar, date, likes, reports},
     auth,
     addLikeComment,
     removeLikeComment,
@@ -19,15 +19,7 @@ const CommentItem = ({
         <div className="post bg-white p-1 my-1">
          
           <div>
-            {/* gerer l'acces au profil et remettre le pseudo dans balise link plus tard
-            <a href="profile.html">
-              <img
-                className="round-img"
-                src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200"
-                alt=""
-              />
-            </a>
-            */}
+          <img className='round-img' src={avatar} alt='' />
             <h4>{pseudo}</h4>
           </div>
          

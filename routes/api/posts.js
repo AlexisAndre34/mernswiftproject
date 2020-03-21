@@ -37,6 +37,7 @@ async(req, res) => {
                 tags: tagsparse.tags,
                 location: req.body.location,
                 pseudo: user.pseudo,
+                avatar: user.avatar,
                 user: req.user.id
             });
 
@@ -233,6 +234,7 @@ async(req, res) => {
         const newComment = {
             text: req.body.text,
             pseudo: user.pseudo,
+            avatar: user.avatar,
             user: req.user.id
         };
 

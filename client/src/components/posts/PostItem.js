@@ -12,22 +12,16 @@ const PostItem = ({
     deletePost,
     addReport,
     removeReport,
-    post: {_id, user, title, text, pseudo, date, tags, location, likes, comments, reports},
+    post: {_id, user, title, text, pseudo, avatar, date, tags, location, likes, comments, reports},
     showActions
 }) => (
     <div className="post bg-white p-1 my-1">
         <div>
-        {/*
-        <a href="profile.html">
-            <img
-            className="round-img"
-            src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200"
-            alt=""
-            />
-            <h4>John Doe</h4>
-        </a>
-        */}
         <h4>{pseudo}</h4>
+        <img className='round-img' src={avatar} alt='' />
+        <Link to={`/profile/${user}`} className='btn btn-primary'>
+          Voir le Profile
+        </Link>
         </div>
         <div>
         <h4 className="my-1">{title}</h4>
@@ -71,7 +65,7 @@ const PostItem = ({
         <Link to={`/posts/${_id}`} className="btn btn-primary">
             Réponses <span className='comment-count'>{comments.length}</span>
         </Link>
-        {auth.user !== null && !auth.loading && user === auth.user._id && (
+        {auth.user !== null && !auth.loading && (user === auth.user._id || auth.user.isAdmin === true) && (
             <button onClick={e => deletePost(_id)}     
             type="button"
             className="btn btn-danger"

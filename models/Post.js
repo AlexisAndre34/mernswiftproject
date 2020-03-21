@@ -27,7 +27,9 @@ const PostSchema = new Schema({
     location: {
         type: String
     },
-    //later add pic
+    avatar: {
+        type: String
+    },
     likes: [
         {
             user: {
@@ -55,6 +57,9 @@ const PostSchema = new Schema({
                 required: true
             },
             pseudo: {
+                type: String
+            },
+            avatar: {
                 type: String
             },
             date: {
