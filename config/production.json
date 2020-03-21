@@ -1,12 +1,4 @@
 {
     "mongoURI": "mongodb+srv://bduser:password07@mernswiftproject-1jeom.mongodb.net/test?retryWrites=true&w=majority",
-    "jwtSecret": "mysecretToken",
-    "apiKey": "AIzaSyBdfEgLOKJG4CSdXTGUq4mxjbP0zCOl5iE",
-    "authDomain": "projectmernswift.firebaseapp.com",
-    "databaseURL": "https://projectmernswift.firebaseio.com",
-    "projectId": "projectmernswift",
-    "storageBucket": "projectmernswift.appspot.com",
-    "messagingSenderId": "456748325362",
-    "appId": "1:456748325362:web:8adcbe49d8858f58f7b36b",
-    "measurementId": "G-K5MPV8MBSY"
+    "jwtSecret": "mysecretToken"
 }
