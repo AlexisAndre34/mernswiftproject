@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import storage from '../../firebaseConfig';
 import { v4 as uuidv4 } from 'uuid';
 
-
 const Register = ({ setAlert, register, isAuthenticated }) => {
     const [formData, setFormData] = useState({
         pseudo: '',
