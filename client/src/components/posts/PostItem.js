@@ -12,7 +12,7 @@ const PostItem = ({
     deletePost,
     addReport,
     removeReport,
-    post: {_id, user, title, text, pseudo, avatar, date, tags, location, likes, comments, reports},
+    post: {_id, user, title, text, pseudo, avatar, imagePost, date, tags, location, likes, comments, reports},
     showActions
 }) => (
     <div className="post bg-white p-1 my-1">
@@ -25,9 +25,13 @@ const PostItem = ({
         </div>
         <div>
         <h4 className="my-1">{title}</h4>
+        <div>
         <p className="my-1">
             {text}
         </p>
+        {imagePost !== "" ? <div id="imagePost"><img src={imagePost} /></div> : "" }
+        </div>
+        
         <p className="post-location">
             <i className="far fa-compass"></i>{' '}
             {location}

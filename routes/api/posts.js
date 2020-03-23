@@ -36,6 +36,7 @@ async(req, res) => {
                 text: req.body.text,
                 tags: tagsparse.tags,
                 location: req.body.location,
+                imagePost: req.body.imagePost,
                 pseudo: user.pseudo,
                 avatar: user.avatar,
                 user: req.user.id

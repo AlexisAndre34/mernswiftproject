@@ -30,6 +30,9 @@ const PostSchema = new Schema({
     avatar: {
         type: String
     },
+    imagePost: {
+        type: String
+    },
     likes: [
         {
             user: {

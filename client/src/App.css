@@ -508,6 +508,21 @@ button {
   background-color: #17a2b8;
 }
 
+#imagePost img {
+  width: 100px;     
+     padding: 10px;
+     z-index: 3;
+}
+
+#imagePost img:hover {
+ transform: scale(5);
+   -webkit-transition-duration: 1s;
+ -moz-transition-duration: 1s;
+ -o-transition-duration: 1s;
+ transition-duration: 1s;
+  z-index: 3;
+}
+
 /* Mobile Styles */
 @media (max-width: 700px) {
   .container {
