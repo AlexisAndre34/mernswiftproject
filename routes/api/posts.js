@@ -96,11 +96,6 @@ router.delete('/:id', auth, async (req, res) => {
             return res.status(400).json({ msg: 'Post not found'})
         }
 
-        //check user
-        if(post.user.toString() !== req.user.id){
-            return res.status(401).json({ msg: 'user not authorized'})
-        }
-
         await post.remove();
 
         res.json('post removed sucessfully');
