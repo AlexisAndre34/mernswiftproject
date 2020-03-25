@@ -22,18 +22,18 @@ const Login = ({ login, isAuthenticated }) => {
     }
 
     if(isAuthenticated) {
-        return <Redirect to='/dashboard' />;
+        return <Redirect to='/posts' />;
     }
 
     return (
         <Fragment>
-            <h1 className="large text-primary">Sign In</h1>
-            <p className="lead"><i className="fas fa-user"></i> Sign into your account</p>
+            <h1 className="large text-primary">Connecter-vous</h1>
+            <p className="lead"><i className="fas fa-user"></i> Connecter-vous à votre compte</p>
             <form className="form" onSubmit={e => onSubmit(e)}>  
                 <div className="form-group">
                 <input 
                     type="email"
-                    placeholder="Email Address" 
+                    placeholder="Adresse Email" 
                     name="email"
                     value={email} 
                     onChange={e => onChange(e)}
@@ -43,7 +43,7 @@ const Login = ({ login, isAuthenticated }) => {
                 <div className="form-group">
                 <input
                     type="password"
-                    placeholder="Password"
+                    placeholder="Mot De Passe"
                     name="password"
                     value={password} 
                     onChange={e => onChange(e)}
@@ -53,7 +53,7 @@ const Login = ({ login, isAuthenticated }) => {
                 <input type="submit" className="btn btn-primary" value="Login" />
             </form>
             <p className="my-1">
-                Don't have an account ? <Link to="Register">Sign up</Link>
+                Vous n'avez pas de compte ? <Link to="Register">Sign up</Link>
             </p>
         </Fragment>
     )

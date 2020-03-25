@@ -69,18 +69,18 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
     }
 
     if(isAuthenticated) {
-        return <Redirect to='/dashboard' />
+        return <Redirect to='/posts' />
     }
 
     return (
         <Fragment>
             <h1 className="large text-primary">Sign Up</h1>
-            <p className="lead"><i className="fas fa-user"></i> Create Your Account</p>
+            <p className="lead"><i className="fas fa-user"></i> Créer votre compte</p>
             <form className="form" onSubmit={e => onSubmit(e)}>
                 <div className="form-group">
                 <input
                     type="text"
-                    placeholder="Name"
+                    placeholder="Nom d'utilisateur"
                     name="pseudo" 
                     value={pseudo} 
                     onChange={e => onChange(e)}
@@ -90,7 +90,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                 <div className="form-group">
                 <input 
                     type="email"
-                    placeholder="Email Address" 
+                    placeholder="Adresse Email" 
                     name="email"
                     value={email} 
                     onChange={e => onChange(e)}
@@ -100,7 +100,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                 <div className="form-group">
                 <input
                     type="password"
-                    placeholder="Password"
+                    placeholder="Mot de passe"
                     name="password"
                     value={password} 
                     onChange={e => onChange(e)}
@@ -110,7 +110,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                 <div className="form-group">
                 <input
                     type="password"
-                    placeholder="Confirm Password"
+                    placeholder="Confirmer mot de passe"
                     name="password2"
                     value={password2} 
                     onChange={e => onChange(e)}
@@ -120,14 +120,14 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                 <Fragment>
                     <div>
                     <input type="file" onChange={handChange} />{' '}
-                    <button type="button" className="btn btn-primary" onClick={handleUpdate} >Button</button>
+                    <button type="button" className="btn btn-primary" onClick={handleUpdate} >valider image</button>
                     </div>
                     { url ? <img src={avatar} /> : <p>choisir une image de profile</p>}
                 </Fragment>
                 <input type="submit" className="btn btn-primary" value="Register" />
             </form>
             <p className="my-1">
-                Already have an account? <Link to='/login'>Sign In</Link>
+                Vous avez déjà un compte ? <Link to='/login'>Sign In</Link>
             </p>
         </Fragment>
     )

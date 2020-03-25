@@ -5,6 +5,7 @@ const Profile = require('../../models/Profile');
 const User = require('../../models/User');
 const Post = require('../../models/Post');
 const { check, validationResult} = require('express-validator');
+const bcrypt = require('bcryptjs');
 
 
 // @route   GET api/profile/me
@@ -66,6 +67,31 @@ router.post('/', auth, async (req, res) => {
         }
     }
 );
+
+// @route POST api/profile/update-password
+// @desc Update password
+// @access Private
+router.put('/update-password', auth, async(req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array()});
+    }
+
+    try {
+        const { password } = req.body;
+        
+        console.log(password)
+        user = await User.findOneAndUpdate(
+            {user: req.user._id },
+            { $set: {password: password}},
+            {new: true}
+        );
+        return res.json(user);  
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 
 // @route   GET api/profile
 // @desc    Get all profile

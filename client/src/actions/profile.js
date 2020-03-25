@@ -62,6 +62,28 @@ export const createProfile = (formData, history, edit = false) => async dispatch
     }
 }
 
+export const updatePassword = (password) => async dispatch => {
+    try {
+        const config = {
+            headers: {
+                'Contente-Type': 'application/json'
+            }
+        }
+        dispatch({
+            type: GET_PROFILE,
+            payload: res.data
+        });
+    
+        const res = await axios.put('api/users/update-password', password, config); 
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: 'error updating password', status: '400' }
+        });
+    }
+    
+}
+
 export const getProfileById = userId => async dispatch => {
     try {
         const res = await axios.get(`/api/profile/user/${userId}`);

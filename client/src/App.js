@@ -12,6 +12,7 @@ import Post from './components/post/Post';
 import Profile from './components/profile/Profile'
 import CreateProfile from './components/profile-forms/CreateProfile';
 import EditProfile from './components/profile-forms/EditProfile';
+import EditPassword from './components/profile-forms/EditPassword';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PrivateRoute from './components/routing/PrivateRoute';
 //Redux
@@ -48,6 +49,7 @@ const App = () => {
             <PrivateRoute exact path="/post/create" component={ PostForm } />
             <PrivateRoute exact path="/create-profile" component={ CreateProfile } />
             <PrivateRoute exact path="/edit-profile" component={ EditProfile } />
+            <PrivateRoute exact path="/edit-password" component={ EditPassword } />
           </Switch>
         </section>
       </Fragment>

@@ -46,7 +46,7 @@ const PostItem = ({
         </p>
         {/* auth.isAuthenticatd may be speareted */}
         {showActions && <Fragment>
-        {auth.isAuthenticated && likes.filter(like  => like.user === auth.user._id).length > 0 ? (
+        {auth.isAuthenticated === true && likes.filter(like  => like.user === auth.user._id).length > 0 ? (
         <button onClick={e => removeLike(_id)} type="button" className="btn btn-light">
         <i className="fas fa-thumbs-up"></i>{' '}
         <span>{likes.length}</span>
