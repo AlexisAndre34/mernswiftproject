@@ -48,11 +48,11 @@ const PostItem = ({
         {showActions && <Fragment>
         {auth.isAuthenticated === true && likes.filter(like  => like.user === auth.user._id).length > 0 ? (
         <button onClick={e => removeLike(_id)} type="button" className="btn btn-light">
-        <i className="fas fa-thumbs-up"></i>{' '}
+        <i class="fas fa-assistive-listening-systems"></i>{' '}
         <span>{likes.length}</span>
         </button> ) : (
         <button onClick={e => addLike(_id)} type="button" className="btn btn-light">
-        <i className="fas fa-thumbs-up"></i>{' '}
+        <i className="fas fa-assistive-listening-systems"></i>{' '}
         <span>{likes.length}</span>
         </button>
         )}

@@ -257,11 +257,11 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res)=> {
         if(!comment) {
             return res.status(404).json({ msg: 'comment not found'});
         }
-
+        {/** 
         if(comment.user.toString() !== req.user.id) {
             res.status(401).json({ msg: 'user not authorized'});
         }
-
+        */}
         //Get remove index
         const removeIndex = post.comments
             .map(comment => comment.user.toString())

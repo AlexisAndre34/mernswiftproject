@@ -20,8 +20,12 @@ const CommentItem = ({
          
           <div>
           <img className='round-img' src={avatar} alt='' />
-            <h4>{pseudo}</h4>
+            
           </div>
+          <h4>{pseudo}</h4>
+          <Link to={`/profile/${user}`} className='btn btn-primary'>
+          Voir le Profile
+        </Link>
          
           <div>
             <p className="my-1">
@@ -53,7 +57,7 @@ const CommentItem = ({
             </button>
             )}
           
-          {auth.isAuthenticated && !auth.loading && user === auth.user._id && (
+          {auth.isAuthenticated && !auth.loading && (user === auth.user._id || auth.user.isAdmin === true) && (
           <button
           onClick={() => deleteComment(postId, _id)}
           type='button'
